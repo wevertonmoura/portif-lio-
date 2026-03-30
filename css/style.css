@@ -1,0 +1,317 @@
+/* =========================================
+   Variáveis e Configurações Globais (Elite Premium)
+   ========================================= */
+:root {
+    --bg-color: #0b0f19;          
+    --glass-bg: rgba(17, 24, 39, 0.4); 
+    --text-main: #f8fafc;          
+    --text-muted: #94a3b8;         
+    --primary: #3b82f6;            
+    --primary-hover: #60a5fa;      
+    --glass-border: rgba(255, 255, 255, 0.08); 
+    
+    --font-main: 'Poppins', sans-serif;
+    --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    --transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Reset Moderno */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-main);
+    line-height: 1.7;
+    overflow-x: hidden; 
+}
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+/* 1. Customização da Barra de Rolagem (Scrollbar Sênior) */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-color); }
+::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+/* --- Elementos Compartilhados (Elite Glassmorphism & Spotlight) --- */
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: var(--shadow-glass);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efeito Spotlight (Lanterna que segue o mouse) */
+.glass-panel::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(59, 130, 246, 0.12), transparent 40%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.glass-panel:hover {
+    border-color: rgba(59, 130, 246, 0.5);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(59, 130, 246, 0.1);
+    transform: translateY(-10px) scale(1.01);
+}
+
+/* --- Navegação --- */
+.navbar {
+    background-color: rgba(11, 15, 25, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+.nav-container { display: flex; justify-content: center; align-items: center; height: 80px; }
+.nav-links { list-style: none; display: flex; gap: 3rem; }
+.nav-links a { text-decoration: none; color: var(--text-main); font-weight: 500; font-size: 0.95rem; transition: var(--transition); }
+.nav-links a:hover { color: var(--primary); }
+
+/* --- Hero Section & Enfeites --- */
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 80px;
+    position: relative;
+}
+
+.bg-grid {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px; z-index: 0; pointer-events: none; opacity: 0.5;
+}
+
+.glow-orb { position: absolute; border-radius: 50%; filter: blur(90px); z-index: 0; pointer-events: none; animation: pulseOrb 8s infinite alternate ease-in-out; }
+.orb-1 { width: 350px; height: 350px; background-color: rgba(59, 130, 246, 0.3); top: 15%; left: 10%; }
+.orb-2 { width: 300px; height: 300px; background-color: rgba(167, 139, 250, 0.2); bottom: 15%; right: 10%; animation-delay: -4s; }
+
+@keyframes pulseOrb {
+    0% { transform: scale(1) translate(0, 0); opacity: 0.4; }
+    100% { transform: scale(1.2) translate(40px, -40px); opacity: 0.7; }
+}
+
+#falling-icons { position: absolute; top: 0; left: 0; width: 100%; height: 100vh; z-index: 1; overflow: hidden; pointer-events: none; }
+.falling-icon-img { position: absolute; top: -50px; width: 28px; height: 28px; opacity: 0; animation: fall linear infinite; }
+@keyframes fall {
+    0% { top: -50px; opacity: 0; transform: rotate(0deg); }
+    15% { opacity: 0.3; }
+    85% { opacity: 0.3; }
+    100% { top: 100vh; opacity: 0; transform: rotate(360deg); }
+}
+
+.hero-container { display: grid; grid-template-columns: 1fr 2fr; gap: 4rem; align-items: center; position: relative; z-index: 10; }
+.hero-image-container { display: flex; justify-content: center; }
+.profile-pic { 
+    width: 280px; height: 280px; border-radius: 50%; object-fit: cover; 
+    border: 4px solid rgba(59, 130, 246, 0.5); 
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3); 
+    transition: var(--transition); 
+}
+.floating { animation: floatImage 5s ease-in-out infinite; }
+@keyframes floatImage { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
+
+/* Nome em Gradiente Premium */
+.hero-content h1 { 
+    font-size: 4rem; font-weight: 700; line-height: 1.1; margin-bottom: 0.5rem; 
+    background: linear-gradient(135deg, #ffffff 0%, #60a5fa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+}
+.greeting { color: var(--primary); font-weight: 600; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 2px; }
+.typing-text { font-size: 1.6rem; font-weight: 400; color: var(--text-muted); margin-bottom: 1.5rem; }
+.description { max-width: 600px; color: var(--text-muted); margin-bottom: 3rem; font-size: 1.1rem; font-weight: 300; }
+.hero-btns { display: flex; gap: 1.5rem; }
+
+/* Botões com Efeito Pulse/Glow */
+.btn { 
+    display: inline-block; padding: 0.9rem 2.5rem; background-color: var(--primary); color: #fff; 
+    text-decoration: none; border-radius: 8px; font-weight: 600; transition: var(--transition); 
+    border: 2px solid var(--primary); position: relative; overflow: hidden; z-index: 1;
+}
+.btn::after {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+    opacity: 0; transition: opacity 0.3s; z-index: -1;
+}
+.btn:hover { background-color: var(--primary-hover); transform: translateY(-3px); box-shadow: 0 0 20px rgba(59, 130, 246, 0.6); }
+.btn:hover::after { opacity: 1; }
+
+.btn-outline { background-color: transparent; color: var(--primary); }
+.btn-outline:hover { background-color: rgba(59, 130, 246, 0.1); color: var(--primary-hover); }
+
+/* --- Seções e Textos --- */
+.section { padding: 8rem 0; position: relative; z-index: 10; }
+.section-title { font-size: 2.8rem; font-weight: 700; margin-bottom: 5rem; text-align: center; position: relative; }
+.section-title::after { content: ''; display: block; width: 80px; height: 5px; background: linear-gradient(90deg, var(--primary), #a78bfa); margin: 15px auto 0; border-radius: 10px; }
+
+.about-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 4rem; align-items: start; }
+.about-text p { color: var(--text-muted); margin-bottom: 1.5rem; font-size: 1.1rem; font-weight: 300; }
+.about-stats { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+.stat-item { padding: 1.5rem; }
+.stat-item h3 { color: var(--primary); font-size: 0.9rem; text-transform: uppercase; margin-bottom: 0.2rem; }
+.stat-item p { font-weight: 500; font-size: 1.1rem; }
+
+/* --- Experiência --- */
+.experience-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 3rem; }
+.experience-item { padding: 3rem; }
+.experience-header h3 { font-size: 1.5rem; margin-bottom: 0.3rem; font-weight: 600; }
+.experience-date { color: var(--primary); font-weight: 500; font-size: 0.9rem; margin-bottom: 2rem; }
+.experience-body ul { list-style: none; color: var(--text-muted); margin-bottom: 2rem; }
+.experience-body ul li { position: relative; padding-left: 1.5rem; margin-bottom: 1rem; font-size: 0.95rem; font-weight: 300; }
+.experience-body ul li::before { content: '→'; position: absolute; left: 0; color: var(--primary); font-weight: bold; }
+.tech-stack { font-family: var(--font-mono); font-size: 0.85rem; color: #cbd5e1; padding-top: 1.5rem; border-top: 1px solid var(--glass-border); }
+
+/* --- Habilidades --- */
+.skills-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+.skill-category { padding: 2.5rem; }
+.skill-category h3 { margin-bottom: 1.5rem; font-size: 1.3rem; font-weight: 600; }
+.skill-tags { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+.skill-tags span { background-color: rgba(255, 255, 255, 0.05); color: var(--text-main); padding: 0.6rem 1.2rem; border-radius: 50px; font-size: 0.85rem; font-weight: 500; border: 1px solid var(--glass-border); transition: var(--transition); }
+.skill-tags span:hover { background-color: rgba(59, 130, 246, 0.1); color: var(--primary-hover); border-color: var(--primary); transform: translateY(-2px); }
+
+/* --- Projetos Sênior --- */
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 3rem; }
+.project-card { display: flex; flex-direction: column; overflow: hidden; padding: 0; }
+.project-image-container { width: 100%; height: 260px; overflow: hidden; border-bottom: 1px solid var(--glass-border); background-color: rgba(0,0,0,0.2); display: flex; justify-content: center; align-items: center; }
+.img-fluid-project { max-width: 100%; height: 100%; object-fit: contain; padding: 1.5rem; transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); }
+.project-card:hover .img-fluid-project { transform: scale(1.08); }
+
+.project-body { padding: 2.5rem; flex-grow: 1; display: flex; flex-direction: column; position: relative; z-index: 1; }
+.project-body h3 { margin-bottom: 0.5rem; font-size: 1.5rem; font-weight: 600; }
+.project-highlight { color: var(--primary-hover) !important; font-weight: 500; font-size: 0.9rem !important; margin-bottom: 1rem !important; }
+.project-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem; font-weight: 300; }
+
+.project-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 2.5rem; }
+.project-tags span { background-color: rgba(59, 130, 246, 0.1); color: var(--primary-hover); padding: 0.3rem 0.8rem; border-radius: 4px; font-size: 0.75rem; font-family: var(--font-mono); font-weight: bold; border: 1px solid rgba(59, 130, 246, 0.2); }
+
+.project-actions { margin-top: auto; display: flex; gap: 1rem; }
+.btn-sm { padding: 0.6rem 1.5rem; font-size: 0.85rem; border-radius: 6px; background-color: var(--primary); color: #fff; text-decoration: none; font-weight: 600; transition: var(--transition); border: 1px solid var(--primary); }
+.btn-sm:hover { background-color: var(--primary-hover); border-color: var(--primary-hover); }
+.btn-outline-sm { background-color: transparent; border: 1px solid var(--primary); color: var(--primary); }
+.btn-outline-sm:hover { background-color: rgba(59, 130, 246, 0.1); color: var(--primary-hover); }
+
+/* --- Rodapé --- */
+.footer { background-color: rgba(11, 15, 25, 0.95); padding: 6rem 0 3rem; border-top: 1px solid var(--glass-border); text-align: center; position: relative; z-index: 10; }
+.footer h2 { font-size: 2.2rem; margin-bottom: 1rem; font-weight: 600; }
+.footer p { color: var(--text-muted); max-width: 500px; margin: 0 auto 3rem auto; font-weight: 300; }
+.footer-links { display: flex; justify-content: center; gap: 3rem; margin-bottom: 5rem; }
+.footer-link { text-decoration: none; color: var(--text-main); font-weight: 500; transition: var(--transition); }
+.footer-link:hover { color: var(--primary); }
+.copyright { font-size: 0.85rem !important; color: #475569 !important; }
+
+/* --- Menu Hambúrguer (Mobile) --- */
+.hamburger { display: none; cursor: pointer; z-index: 2000; }
+.bar { display: block; width: 25px; height: 3px; margin: 5px auto; transition: all 0.3s ease-in-out; background-color: var(--text-main); border-radius: 3px; }
+
+/* --- Responsividade --- */
+@media (max-width: 1024px) {
+    html { font-size: 15px; }
+    .hero-container { gap: 2rem; }
+    .profile-pic { width: 220px; height: 220px; }
+    .hero-content h1 { font-size: 3rem; }
+    .experience-list { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+    .hamburger { display: block; }
+    .nav-links {
+        position: fixed; left: -100%; top: 80px; gap: 0; flex-direction: column;
+        background-color: rgba(11, 15, 25, 0.95); backdrop-filter: blur(15px);
+        width: 100%; text-align: center; transition: 0.3s; box-shadow: 0 10px 27px rgba(0, 0, 0, 0.5);
+    }
+    .nav-links.active { left: 0; }
+    .nav-links li { margin: 1.5rem 0; }
+    .hamburger.active .bar:nth-child(2) { opacity: 0; }
+    .hamburger.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .hamburger.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+    .hero-container { grid-template-columns: 1fr; text-align: center; gap: 1rem; }
+    .hero-image-container { order: -1; }
+    .hero-btns { justify-content: center; }
+    .description { margin: 0 auto 3rem auto; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .section-title { font-size: 2.2rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .orb-1, .orb-2 { width: 200px; height: 200px; }
+}
+/* Estilo para o link ativo no menu */
+.nav-links a.active-link {
+    color: var(--primary) !important;
+    font-weight: 700;
+}
+
+/* Cursor piscante para o efeito de digitação */
+.typing-text::after {
+    content: "|";
+    animation: blink 0.7s infinite;
+    color: var(--primary);
+    margin-left: 5px;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+/* --- Estilo Elite para Ícones em Títulos e Botões --- */
+.section-title i {
+    margin-right: 15px;
+    color: var(--primary);
+    vertical-align: middle;
+}
+
+.btn-sm i, .btn i {
+    margin-right: 8px;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+/* Efeito de movimento no ícone ao passar o mouse */
+.btn-sm:hover i, .btn:hover i {
+    transform: translateX(3px) scale(1.1);
+}
+
+.btn-sm, .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+/* Ícones que brilham ao passar o mouse */
+.section-title i {
+    transition: all 0.5s ease;
+    text-shadow: 0 0 0px var(--primary);
+}
+
+.section-title:hover i {
+    text-shadow: 0 0 15px var(--primary);
+    transform: scale(1.2) rotate(-10deg);
+}
+
+/* Ajuste fino na Badge de Status */
+.status-badge {
+    cursor: default;
+    transition: var(--transition);
+}
+
+.status-badge:hover {
+    background: rgba(37, 211, 102, 0.2);
+    transform: translateX(5px);
+}
